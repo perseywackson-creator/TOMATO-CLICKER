@@ -65,11 +65,19 @@
             setTimeout(() => p.remove(), 500);
         }
 
-        function redeem(type) {
-            if (clicks >= prices[type]) {
-                window.open(links[type], '_blank');
-            }
-        }
-    </script>
-</body>
-</html>
+function redeem(type) {
+    if (clicks >= prices[type]) {
+        // Силовой метод для Telegram Web App
+        const link = links[type];
+        
+        // 1. Пытаемся закрыть эпку и открыть ссылку
+        window.open(link, '_blank');
+        
+        // 2. Если не сработало, пробуем через location
+        setTimeout(() => {
+            window.location.href = link;
+        }, 100);
+    } else {
+        alert("Нужно еще немного поднажать! Накопи " + prices[type]);
+    }
+}
