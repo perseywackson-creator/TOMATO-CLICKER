@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tomato Emperor Clicker</title>
+    <style>
+        body { background: #1a0b2e; color: white; font-family: sans-serif; text-align: center; overflow: hidden; user-select: none; }
+        #emperor { width: 250px; cursor: pointer; transition: transform 0.05s; margin-top: 50px; -webkit-tap-highlight-color: transparent; }
+        #emperor:active { transform: scale(0.95); }
+        #counter { font-size: 48px; font-weight: bold; color: #a855f7; margin: 20px 0; }
+        #code-box { display: none; background: #3b0764; padding: 20px; border-radius: 15px; border: 2px solid #a855f7; margin: 20px; }
+        .particle { position: absolute; color: #ff6347; pointer-events: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="counter">0</div>
+    <!-- Вставь ссылку на свою картинку с троном ниже -->
+    <img id="emperor" src="https://ibb.co" onclick="clickTomato(event)">
+    
+    <div id="code-box">
+        <h3>ТЫ СПЕЛЫЙ!</h3>
+        <p>Твой код для ПРО-статуса:</p>
+        <h2 id="secret-code">TOMAT_LEGEND_2026</h2>
+        <p>Введи его в боте!</p>
+    </div>
+
+    <script>
+        let clicks = 0;
+        const target = 100000;
+        const counter = document.getElementById('counter');
+        const emperor = document.getElementById('emperor');
+        const codeBox = document.getElementById('code-box');
+
+        function clickTomato(e) {
+            if (clicks >= target) return;
+            
+            clicks++;
+            counter.innerText = clicks;
+
+            // Создаем вылетающий текст +1
+            const p = document.createElement('div');
+            p.innerText = '+1';
+            p.className = 'particle';
+            p.style.left = e.pageX + 'px';
+            p.style.top = e.pageY + 'px';
+            document.body.appendChild(p);
+            
+            setTimeout(() => {
+                p.style.top = (e.pageY - 100) + 'px';
+                p.style.opacity = 0;
+            }, 10);
+            setTimeout(() => p.remove(), 500);
+
+            if (clicks >= target) {
+                emperor.style.display = 'none';
+                counter.style.display = 'none';
+                codeBox.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
