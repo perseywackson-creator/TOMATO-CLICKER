@@ -3,68 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tomato Emperor</title>
-    <!-- Добавляем библиотеку Телеграма, чтобы ссылки работали внутри бота -->
     <script src="https://telegram.org"></script>
     <style>
-        body { background: #1a0b2e; color: white; font-family: sans-serif; text-align: center; user-select: none; margin: 0; padding-bottom: 50px; }
-        #counter { font-size: 54px; font-weight: bold; color: #a855f7; margin: 20px 0; }
-        #emperor { width: 220px; cursor: pointer; transition: transform 0.05s; -webkit-tap-highlight-color: transparent; }
+        body { background: #1a0b2e; color: white; font-family: sans-serif; text-align: center; margin: 0; user-select: none; }
+        #counter { font-size: 50px; font-weight: bold; color: #a855f7; margin: 20px 0; }
+        #emperor { width: 200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
         #emperor:active { transform: scale(0.9); }
-        .shop-container { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         .buy-btn { 
-            width: 80%; max-width: 300px; padding: 15px; border-radius: 12px; border: none;
-            background: #4b5563; color: #9ca3af; font-weight: bold; font-size: 16px;
-            cursor: not-allowed; transition: 0.3s;
+            display: block; width: 80%; margin: 10px auto; padding: 15px; border-radius: 12px; border: none;
+            background: #4b5563; color: #9ca3af; font-weight: bold; transition: 0.3s;
         }
-        .buy-btn.active { background: #a855f7; color: white; cursor: pointer; box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); }
-        .particle { position: absolute; color: #ff6347; pointer-events: none; font-weight: bold; animation: fly 0.5s ease-out forwards; }
-        @keyframes fly { to { transform: translateY(-100px); opacity: 0; } }
+        .active { background: #a855f7 !important; color: white !important; cursor: pointer; }
     </style>
 </head>
 <body>
-
     <div id="counter">0</div>
-    <img id="emperor" src="tomat.jpg" onclick="clickTomato(event)">
-
-    <div class="shop-container">
-        <!-- Уменьшил цены до 10 и 20 для ТЕСТА. Поменяешь потом на свои -->
-        <button id="btn-unban" class="buy-btn" onclick="redeem('unban')">ПОЛУЧИТЬ РАЗБАН (10)</button>
-        <button id="btn-pro" class="buy-btn" onclick="redeem('pro')">СТАТЬ ЭЛИТОЙ (20)</button>
-    </div>
+    <img id="emperor" src="tomat.jpg" onclick="clickTomato()">
+    <button id="btn-unban" class="buy-btn" onclick="redeem('unban')">РАЗБАН (10)</button>
+    <button id="btn-pro" class="buy-btn" onclick="redeem('pro')">ЭЛИТА (20)</button>
 
     <script>
-        const tg = window.Telegram.WebApp;
-        tg.expand(); // Раскрывает приложение на весь экран
-
         let clicks = 0;
-        const prices = { unban: 10, pro: 20 };
-        
-        // ВНИМАНИЕ: Замени ссылки ниже на свои РЕАЛЬНЫЕ ссылки из PuzzleBot
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // ВНИМАНИЕ! Проверь, чтобы ссылки были ВНУТРИ кавычек и БЕЗ пробелов
         const links = {
-            unban: "tg://resolve?domain=tomattomat_bot&start=cmd_run_4252930642", 
+            unban: "tg://resolve?domain=tomattomat_bot&start=cmd_run_4252930642",
             pro: "tg://resolve?domain=tomattomat_bot&start=cmd_run_3041841067"
         };
 
-        function clickTomato(e) {
+        function clickTomato() {
             clicks++;
             document.getElementById('counter').innerText = clicks;
-
-            if (clicks >= prices.unban) document.getElementById('btn-unban').classList.add('active');
-            if (clicks >= prices.pro) document.getElementById('btn-pro').classList.add('active');
-
-            const p = document.createElement('div');
-            p.innerText = '+1';
-            p.className = 'particle';
-            p.style.left = e.pageX + 'px';
-            p.style.top = e.pageY + 'px';
-            document.body.appendChild(p);
-            setTimeout(() => p.remove(), 500);
+            if (clicks >= 10) document.getElementById('btn-unban').classList.add('active');
+            if (clicks >= 20) document.getElementById('btn-pro').classList.add('active');
         }
 
         function redeem(type) {
-            if (clicks >= prices[type]) {
-                // Это САМЫЙ надежный метод для работы внутри Telegram Web App
+            if ((type === 'unban' && clicks >= 10) || (type === 'pro' && clicks >= 20)) {
                 tg.openTelegramLink(links[type]);
             }
         }
