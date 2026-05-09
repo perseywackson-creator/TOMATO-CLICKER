@@ -1,50 +1,33 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="https://telegram.org"></script>
-    <style>
-        body { background: #1a0b2e; color: white; font-family: sans-serif; text-align: center; margin: 0; user-select: none; }
-        #counter { font-size: 50px; font-weight: bold; color: #a855f7; margin: 20px 0; }
-        #emperor { width: 200px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-        #emperor:active { transform: scale(0.9); }
-        .buy-btn { 
-            display: block; width: 80%; margin: 10px auto; padding: 15px; border-radius: 12px; border: none;
-            background: #4b5563; color: #9ca3af; font-weight: bold; transition: 0.3s;
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    let clicks = 0;
+    // Вставь свои ссылки ПРЯМО ТУТ, очень внимательно
+    const links = {
+        unban: "tg://resolve?domain=tomattomat_bot&start=cmd_run_4252930642",
+        pro: "tg://resolve?domain=tomattomat_bot&start=cmd_run_3041841067"
+    };
+
+    function clickTomato() {
+        clicks++;
+        document.getElementById('counter').innerText = clicks;
+        // Проверка активации кнопок
+        if (clicks >= 10) document.getElementById('btn-unban').classList.add('active');
+        if (clicks >= 20) document.getElementById('btn-pro').classList.add('active');
+    }
+
+    function redeem(type) {
+        const price = (type === 'unban') ? 10 : 20;
+        if (clicks >= price) {
+            // САМАЯ ЖЕСТКАЯ КОМАНДА ПЕРЕХОДА
+            const a = document.createElement('a');
+            a.href = links[type];
+            a.target = '_blank';
+            a.click();
+            
+            // Запасной вариант для приложения
+            tg.openLink(links[type]);
         }
-        .active { background: #a855f7 !important; color: white !important; cursor: pointer; }
-    </style>
-</head>
-<body>
-    <div id="counter">0</div>
-    <img id="emperor" src="tomat.jpg" onclick="clickTomato()">
-    <button id="btn-unban" class="buy-btn" onclick="redeem('unban')">РАЗБАН (10)</button>
-    <button id="btn-pro" class="buy-btn" onclick="redeem('pro')">ЭЛИТА (20)</button>
-
-    <script>
-        let clicks = 0;
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        // ВНИМАНИЕ! Проверь, чтобы ссылки были ВНУТРИ кавычек и БЕЗ пробелов
-        const links = {
-            unban: "tg://resolve?domain=tomattomat_bot&start=cmd_run_4252930642",
-            pro: "tg://resolve?domain=tomattomat_bot&start=cmd_run_3041841067"
-        };
-
-        function clickTomato() {
-            clicks++;
-            document.getElementById('counter').innerText = clicks;
-            if (clicks >= 10) document.getElementById('btn-unban').classList.add('active');
-            if (clicks >= 20) document.getElementById('btn-pro').classList.add('active');
-        }
-
-        function redeem(type) {
-            if ((type === 'unban' && clicks >= 10) || (type === 'pro' && clicks >= 20)) {
-                tg.openTelegramLink(links[type]);
-            }
-        }
-    </script>
-</body>
-</html>
+    }
+</script>
