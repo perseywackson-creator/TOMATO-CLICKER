@@ -67,7 +67,7 @@
 
         function redeem(type) {
             if (clicks >= prices[type]) {
-                window.location.href = links[type];
+                window.open(links[type], '_blank');
             }
         }
     </script>
